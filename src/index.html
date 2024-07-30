@@ -5,25 +5,41 @@
     <!-- PON UN FAVICON!!! -->
     <link rel="icon" type="image/svg+xml" href="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- CAMBIA EL TITLE!!! -->
-    <title>Vite Template</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Monofett&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet" />
+
+    <title>JS MINIGAMES</title>
   </head>
   <body>
-    <h1>HOME</h1>
-    <nav>
-      <ul>
-        <li>
-          <a href="/">HOME</a>
-        </li>
-        <li>
-          <a href="./html/about.html">ABOUT</a>
-        </li>
-        <li>
-          <a href="./html/contact.html">CONTACT</a>
-        </li>
-      </ul>
-    </nav>
-    <button id="button">CLICK HOME</button>
+    <main class="main">
+      <a href="./index.html"><h1 class="main-title">JS MINIGAMES</h1></a>
+
+      <div class="games-container">
+        <a class="game-link" href="./html/tic-tac-toe.html">
+          <img class="game-link__img" src="./assets/images/tic-tac-toe.png" alt="" />
+          <button class="game-link__button game-link__button--tictactoe">TIC TAC TOE</button></a
+        >
+
+        <a class="game-link" href="./html/hangman.html">
+          <img class="game-link__img" src="./assets/images/hangman.png" alt="" />
+          <button class="game-link__button game-link__button--hangman">HANGMAN</button></a
+        >
+
+        <a class="game-link" href="./html/minesweeper.html">
+          <img class="game-link__img" src="./assets/images/minesweeper.png" alt="" />
+          <button class="game-link__button game-link__button--minesweeper">MINESWEEPER</button></a
+        >
+      </div>
+    </main>
 
     <script type="module" src="./js/index.js"></script>
   </body>

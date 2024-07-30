@@ -1,1 +1,50 @@
+@use '../mixins/responsive.scss' as *;
 
+.main-title {
+  font-family: 'Monofett', monospace;
+  font-weight: 400;
+  font-size: 48px;
+  text-shadow: 0 0 50px #c68af6;
+  margin-bottom: 64px;
+
+  @include responsive(laptop) {
+    font-size: 64px;
+    margin-block: 96px;
+  }
+
+  &--sm {
+    font-size: 40px;
+
+    @include responsive(laptop) {
+      font-size: 48px;
+    }
+  }
+}
+
+.game-title {
+  font-family: 'Tilt Warp', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  width: 256px;
+  background-image: var(--gradient-green-purple);
+  border-radius: 16px;
+  padding: 16px;
+  margin-inline: auto;
+
+  @include responsive(laptop) {
+    font-size: 40px;
+    width: 400px;
+  }
+
+  &--tictactoe {
+    background-image: var(--gradient-green-purple);
+  }
+
+  &--hangman {
+    background-image: var(--gradient-red-purple);
+  }
+
+  &--minesweeper {
+    background-image: var(--gradient-orange-purple);
+  }
+}

@@ -1,0 +1,68 @@
+@use '../mixins/responsive.scss' as *;
+@use '../mixins/hover.scss' as *;
+
+.games-container {
+  width: fit-content;
+  display: grid;
+  justify-items: center;
+  gap: 80px;
+  margin-inline: auto;
+
+  @include responsive(laptop) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include responsive(desktop) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.game-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__img {
+    margin-bottom: 24px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 33px 3px #c68af6;
+    transition: 0.2s ease-in-out;
+
+    @include hover {
+      &:hover {
+        box-shadow: 0px 0px 33px 9px #c68af6;
+        transition: 0.2s ease-in-out;
+      }
+    }
+  }
+
+  &__button {
+    width: 284px;
+    border: none;
+    border-radius: 10px;
+    color: var(--white);
+    padding: 10px;
+    cursor: pointer;
+    background-size: 300% 100%;
+    transition: background-position 0.8s ease-in-out;
+
+    @include hover {
+      &:hover {
+        background-position: 100% 0;
+        transition: background-position 0.8s ease-in-out;
+      }
+    }
+
+    &--tictactoe {
+      background-image: linear-gradient(to right, #00ffc2, #7026aa, #00ffc2, #7026aa);
+    }
+
+    &--hangman {
+      background-image: linear-gradient(to right, #f00, #7026aa, #f00, #7026aa);
+    }
+
+    &--minesweeper {
+      background-image: linear-gradient(to right, #f90, #7026aa, #f90, #7026aa);
+    }
+  }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- PON UN FAVICON!!! -->
+    <link rel="icon" type="image/svg+xml" href="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Monofett&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap" rel="stylesheet" />
+
+    <title>Tic tac toe</title>
+  </head>
+
+  <body>
+    <main class="main">
+      <a href="../index.html"><h1 class="main-title main-title--sm">JS MINIGAMES</h1></a>
+
+      <div class="tictactoe-game">
+        <h2 class="game-title game-title--tictactoe">TIC TAC TOE</h2>
+
+        <div class="tictactoe-game__container">
+          <div class="tictactoe-game__inf">
+            <div class="tictactoe-game__score tictactoe-game__score--you">
+              <span>YOU</span>
+              <span class="tictactoe-game__points">0</span>
+            </div>
+
+            <span class="tictactoe-game__result tictactoe-game__result--you"></span>
+            <span class="tictactoe-game__turn"></span>
+          </div>
+
+          <div id="tictactoe-game-board" class="tictactoe-game__board"></div>
+
+          <div class="tictactoe-game__inf">
+            <div class="tictactoe-game__score tictactoe-game__score--pc">
+              <span>PC</span>
+              <span class="tictactoe-game__points">0</span>
+            </div>
+
+            <span class="tictactoe-game__result tictactoe-game__result--pc"></span>
+            <span class="tictactoe-game__turn"></span>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button class="button-start-tictactoe">START GAME</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- OBLIGATORIO PONER EL ACCESO AL SCRIPT -->
+    <script type="module" src="../js/index.js"></script>
+  </body>
+</html>

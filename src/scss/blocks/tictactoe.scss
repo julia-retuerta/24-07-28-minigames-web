@@ -1,0 +1,131 @@
+@use '../mixins/responsive.scss' as *;
+@use '../mixins/hover.scss' as *;
+
+.tictactoe-game {
+  position: relative;
+
+  &__container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+
+    @include responsive(laptop) {
+      gap: 48px;
+    }
+  }
+
+  &__score {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 118px;
+    height: 96px;
+    color: var(--dark-purple);
+    border-radius: 15px;
+    font-size: 36px;
+
+    @include responsive(laptop) {
+      width: 160px;
+      height: 120px;
+      font-size: 40px;
+    }
+
+    &--you {
+      background-color: var(--bright-green);
+    }
+
+    &--pc {
+      background-color: var(--sky-blue);
+    }
+  }
+
+  &__points {
+    font-size: 48px;
+    line-height: 0.7;
+
+    @include responsive(laptop) {
+      font-size: 64px;
+    }
+  }
+
+  &__result {
+    font-size: 64px;
+
+    &--you {
+      color: var(--bright-green);
+      text-shadow: 0px 0px 35px var(--bright-green);
+    }
+
+    &--pc {
+      color: var(--sky-blue);
+      text-shadow: 0px 0px 35px var(--sky-blue);
+    }
+  }
+
+  &__board {
+    position: absolute;
+    top: 120px;
+    display: grid;
+    gap: 14px;
+
+    @include responsive(laptop) {
+      position: static;
+      gap: 24px;
+    }
+  }
+
+  &__row {
+    display: flex;
+    gap: 14px;
+
+    @include responsive(laptop) {
+      gap: 24px;
+    }
+  }
+
+  &__box {
+    width: 76px;
+    height: 76px;
+    background-color: var(--purple);
+    border-radius: 12px;
+
+    @include responsive(laptop) {
+      width: 120px;
+      height: 120px;
+      border-radius: 15px;
+    }
+  }
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-start-tictactoe {
+  position: absolute;
+  top: 510px;
+  width: 210px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-image: var(--gradient-green-purple);
+  color: var(--white);
+  cursor: pointer;
+
+  @include hover {
+    &:hover {
+      box-shadow: 0px 0px 20px 0px #7500d2;
+    }
+  }
+
+  @include responsive(laptop) {
+    position: static;
+    width: 300px;
+    padding: 12px;
+    border-radius: 15px;
+    font-size: 40px;
+  }
+}

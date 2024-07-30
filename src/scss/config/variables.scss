@@ -1,5 +1,13 @@
 :root {
   /* Variables CSS */
+  --dark-purple: #35005f;
+  --purple: #7026aa;
+  --white: #ffffff;
+  --bright-green: #00ffc2;
+  --sky-blue: #64daff;
+  --gradient-green-purple: linear-gradient(90deg, #00ffc2 0%, #7026aa 100%);
+  --gradient-red-purple: linear-gradient(90deg, #f00 0%, #7026aa 100%);
+  --gradient-orange-purple: linear-gradient(90deg, #f90 0%, #7026aa 100%);
 }
 
 /* Variables SASS */
