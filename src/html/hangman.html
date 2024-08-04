@@ -21,16 +21,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap" rel="stylesheet" />
 
-    <title>HANGMAN</title>
+    <title>Hangmam</title>
   </head>
 
   <body>
     <main class="main">
       <a href="../index.html"><h1 class="main-title main-title--sm">JS MINIGAMES</h1></a>
-      <h2 class="secondary-title secondary-title--hangman">HANGMAN</h2>
+
+      <div class="hangman-game">
+        <h2 class="game-title game-title--hangman">HANGMAN</h2>
+
+        <div class="hangman-game__container">
+          <div class="hangman-game__drawing">
+            <p>NUMBER OF TRIES: 6</p>
+            <img src="../assets/images/gallows.png" alt="" />
+          </div>
+
+          <div class="hangman-game__data">
+            <span class="hangman-game__result">YOU LOSE</span>
+            <div id="blanks" class="hangman-game__blanks"></div>
+            <div class="hangman-game__failed-letters"></div>
+
+            <form id="form">
+              <input type="text" class="input-enter-a-letter" placeholder="ENTER A LETTER" maxlength="1" />
+            </form>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!-- OBLIGATORIO PONER EL ACCESO AL SCRIPT -->
-    <script type="module" src="../js/index.js"></script>
+    <script type="module" src="../js/hangman.js"></script>
   </body>
 </html>

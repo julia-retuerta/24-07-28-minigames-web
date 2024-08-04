@@ -3,6 +3,9 @@
 
 .tictactoe-game {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &__container {
     position: relative;
@@ -50,20 +53,6 @@
     }
   }
 
-  &__result {
-    font-size: 64px;
-
-    &--you {
-      color: var(--bright-green);
-      text-shadow: 0px 0px 35px var(--bright-green);
-    }
-
-    &--pc {
-      color: var(--sky-blue);
-      text-shadow: 0px 0px 35px var(--sky-blue);
-    }
-  }
-
   &__board {
     position: absolute;
     top: 120px;
@@ -86,6 +75,9 @@
   }
 
   &__box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 76px;
     height: 76px;
     background-color: var(--purple);
@@ -97,16 +89,59 @@
       border-radius: 15px;
     }
   }
+
+  &__turn {
+    position: absolute;
+    top: 530px;
+    font-size: 40px;
+
+    &--you {
+      color: var(--bright-green);
+      text-shadow: 0px 0px 35px var(--bright-green);
+    }
+
+    &--pc {
+      color: var(--sky-blue);
+      text-shadow: 0px 0px 35px var(--sky-blue);
+    }
+
+    @include responsive(laptop) {
+      position: static;
+      font-size: 48px;
+    }
+  }
+
+  &__result {
+    position: absolute;
+    top: 520px;
+    font-size: 48px;
+
+    @include responsive(laptop) {
+      position: static;
+      margin-bottom: 6px;
+      font-size: 64px;
+    }
+
+    &--you {
+      color: var(--bright-green);
+      text-shadow: 0px 0px 35px var(--bright-green);
+    }
+
+    &--pc {
+      color: var(--sky-blue);
+      text-shadow: 0px 0px 35px var(--sky-blue);
+    }
+
+    &--both {
+      color: var(--between-green-blue);
+      text-shadow: 0px 0px 35px var(--between-green-blue);
+    }
+  }
 }
 
-.button-container {
-  display: flex;
-  justify-content: center;
-}
-
-.button-start-tictactoe {
+.button-tictactoe {
   position: absolute;
-  top: 510px;
+  top: 530px;
   width: 210px;
   padding: 10px;
   border: none;
@@ -114,6 +149,10 @@
   background-image: var(--gradient-green-purple);
   color: var(--white);
   cursor: pointer;
+
+  &--restart {
+    top: 590px;
+  }
 
   @include hover {
     &:hover {
@@ -127,5 +166,34 @@
     padding: 12px;
     border-radius: 15px;
     font-size: 40px;
+  }
+}
+
+.active {
+  @include hover {
+    &:hover {
+      cursor: pointer;
+      background-color: var(--light-purple);
+    }
+  }
+}
+
+.circle {
+  width: 58px;
+  height: 58px;
+
+  @include responsive(laptop) {
+    width: auto;
+    height: auto;
+  }
+}
+
+.cross {
+  width: 50px;
+  height: 50px;
+
+  @include responsive(laptop) {
+    width: auto;
+    height: auto;
   }
 }

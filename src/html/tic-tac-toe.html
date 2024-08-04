@@ -35,11 +35,8 @@
           <div class="tictactoe-game__inf">
             <div class="tictactoe-game__score tictactoe-game__score--you">
               <span>YOU</span>
-              <span class="tictactoe-game__points">0</span>
+              <span id="you-points" class="tictactoe-game__points">0</span>
             </div>
-
-            <span class="tictactoe-game__result tictactoe-game__result--you"></span>
-            <span class="tictactoe-game__turn"></span>
           </div>
 
           <div id="tictactoe-game-board" class="tictactoe-game__board"></div>
@@ -47,21 +44,28 @@
           <div class="tictactoe-game__inf">
             <div class="tictactoe-game__score tictactoe-game__score--pc">
               <span>PC</span>
-              <span class="tictactoe-game__points">0</span>
+              <span id="pc-points" class="tictactoe-game__points">0</span>
             </div>
-
-            <span class="tictactoe-game__result tictactoe-game__result--pc"></span>
-            <span class="tictactoe-game__turn"></span>
           </div>
         </div>
 
-        <div class="button-container">
-          <button class="button-start-tictactoe">START GAME</button>
-        </div>
+        <button id="button-start-tictactoe" class="button-tictactoe">START GAME</button>
+
+        <span id="your-turn" class="tictactoe-game__turn tictactoe-game__turn--you hidden">YOUR TURN</span>
+
+        <span id="pc-turn" class="tictactoe-game__turn tictactoe-game__turn--pc hidden">PC TURN</span>
+
+        <span id="result-you" class="tictactoe-game__result tictactoe-game__result--you"></span>
+        <span id="result-pc" class="tictactoe-game__result tictactoe-game__result--pc"></span>
+        <span id="result-both" class="tictactoe-game__result tictactoe-game__result--both"></span>
+
+        <button id="button-restart-tictactoe" class="button-tictactoe button-tictactoe--restart hidden">
+          RESTART GAME
+        </button>
       </div>
     </main>
 
     <!-- OBLIGATORIO PONER EL ACCESO AL SCRIPT -->
-    <script type="module" src="../js/index.js"></script>
+    <script type="module" src="../js/tictactoe.js"></script>
   </body>
 </html>

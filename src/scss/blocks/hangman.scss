@@ -1,0 +1,61 @@
+@use '../mixins/responsive.scss' as *;
+
+.hangman-game {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+
+    @include responsive(laptop) {
+      flex-direction: row;
+      justify-content: center;
+      gap: 150px;
+    }
+  }
+
+  &__data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__result {
+    color: var(--magenta);
+    font-size: 48px;
+    text-shadow: 0px 0px 35px var(--magenta);
+  }
+
+  &__blanks {
+    display: flex;
+    margin-block: 50px;
+  }
+
+  &__line {
+    width: 30px;
+    height: 3px;
+    margin: 6px;
+    background-color: var(--white);
+    border-radius: 3px;
+  }
+}
+
+.input-enter-a-letter {
+  background: none;
+  border: none;
+  border: 3.5px solid var(--magenta);
+  border-radius: 40px;
+  color: var(--white);
+  padding-block: 8px;
+  text-align: center;
+
+  &::placeholder {
+    color: var(--white);
+    opacity: 0.5;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0px 0px 10px var(--magenta);
+  }
+}
