@@ -19,6 +19,8 @@ const SOLUTION_WORDS = [
 ];
 
 let hangmanWord = '';
+let correctLetters = [];
+let failedLetters = [];
 
 const chooseHangmanWord = () => {
   const randomNumber = Math.floor(Math.random() * SOLUTION_WORDS.length);
@@ -41,14 +43,6 @@ const createLetterLines = () => {
 const startGame = () => {
   chooseHangmanWord();
   createLetterLines();
-};
-
-const printLetter = (letter, position, className) => {
-  const letterBox = lettersContainerElement.children[currentRow].children[position];
-  if (!letterBox.classList.contains('correct')) {
-    letterBox.classList.add(className);
-  }
-  letterBox.textContent = letter;
 };
 
 startGame();
