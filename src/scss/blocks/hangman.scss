@@ -17,12 +17,6 @@
 
   &__drawing {
     position: relative;
-    // width: 200px;
-    // // height: 200px;
-
-    // @include responsive(laptop) {
-    //   width: 300px;
-    // }
   }
 
   &__img-gallows {
@@ -30,7 +24,6 @@
 
     @include responsive(laptop) {
       width: 300px;
-      height: 400px;
     }
   }
 
@@ -47,6 +40,7 @@
     margin-bottom: 20px;
 
     @include responsive(laptop) {
+      margin-top: 40px;
       margin-bottom: 40px;
     }
   }
@@ -54,10 +48,11 @@
   &__blanks {
     display: flex;
     margin-block: 50px;
-  }
+    max-width: 300px;
 
-  &__wrong-letters {
-    margin-bottom: 50px;
+    @include responsive(laptop) {
+      max-width: 400px;
+    }
   }
 
   &__line {
@@ -75,6 +70,10 @@
     left: 50%;
     transform: translateX(-50%);
     text-transform: uppercase;
+  }
+
+  &__wrong-letters {
+    margin-bottom: 50px;
   }
 
   &__button-play-again {
@@ -197,7 +196,7 @@
   border-radius: 5px;
 
   @include responsive(laptop) {
-    top: 326px;
+    top: 329px;
     width: 70px;
     height: 7px;
   }
@@ -217,7 +216,7 @@
     transform: rotate(40deg);
 
     @include responsive(laptop) {
-      top: 322px;
+      top: 323px;
       left: 96%;
       transform: rotate(40deg);
     }

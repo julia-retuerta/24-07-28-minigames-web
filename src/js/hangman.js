@@ -63,6 +63,9 @@ const countUniqueLetters = word => {
   return uniqueLetters.length;
 };
 
+// Elementos de las partes del muñeco
+const parts = document.querySelectorAll('.hangman-game__doll > div');
+
 const updateDisplay = () => {
   // Mostrar letras correctas
   const lines = blanksElement.querySelectorAll('.hangman-game__line');
@@ -82,6 +85,13 @@ const updateDisplay = () => {
   } else {
     wrongLettersElement.textContent = ''; // Limpiar si no hay letras fallidas
   }
+
+  // Mostrar la siguiente parte del muñeco
+  wrongLetters.forEach((letter, index) => {
+    if (parts[index]) {
+      parts[index].classList.remove('hidden');
+    }
+  });
 
   // Actualizar número de intentos restantes
   triesElement.textContent = `NUMBER OF TRIES: ${numberOfTries}`;
@@ -122,6 +132,7 @@ const startGame = () => {
   resultElement.textContent = ''; // Limpiar resultados anteriores
   inputElement.disabled = false; // Asegúrate de que el input esté habilitado al comenzar un nuevo juego
   playAgainButton.classList.add('hidden');
+  parts.forEach(part => part.classList.add('hidden')); // Ocultar partes del cuerpo
   updateDisplay();
 };
 
