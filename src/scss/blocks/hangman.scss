@@ -1,4 +1,5 @@
 @use '../mixins/responsive.scss' as *;
+@use '../mixins/hover.scss' as *;
 
 .hangman-game {
   &__container {
@@ -14,6 +15,25 @@
     }
   }
 
+  &__drawing {
+    position: relative;
+    // width: 200px;
+    // // height: 200px;
+
+    // @include responsive(laptop) {
+    //   width: 300px;
+    // }
+  }
+
+  &__img-gallows {
+    width: 200px;
+
+    @include responsive(laptop) {
+      width: 300px;
+      height: 400px;
+    }
+  }
+
   &__data {
     display: flex;
     flex-direction: column;
@@ -24,6 +44,11 @@
     color: var(--magenta);
     font-size: 48px;
     text-shadow: 0px 0px 35px var(--magenta);
+    margin-bottom: 20px;
+
+    @include responsive(laptop) {
+      margin-bottom: 40px;
+    }
   }
 
   &__blanks {
@@ -31,12 +56,41 @@
     margin-block: 50px;
   }
 
+  &__wrong-letters {
+    margin-bottom: 50px;
+  }
+
   &__line {
+    position: relative;
     width: 30px;
     height: 3px;
-    margin: 6px;
+    margin-inline: 6px;
     background-color: var(--white);
     border-radius: 3px;
+  }
+
+  &__letter {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: uppercase;
+  }
+
+  &__button-play-again {
+    width: 210px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-image: var(--gradient-red-purple);
+    color: var(--white);
+    cursor: pointer;
+
+    @include hover {
+      &:hover {
+        box-shadow: 0px 0px 15px 0px var(--magenta);
+      }
+    }
   }
 }
 
@@ -47,6 +101,7 @@
   border-radius: 40px;
   color: var(--white);
   padding-block: 8px;
+  margin-bottom: 60px;
   text-align: center;
 
   &::placeholder {
@@ -57,5 +112,114 @@
   &:focus {
     outline: none;
     box-shadow: 0px 0px 10px var(--magenta);
+  }
+}
+
+.head {
+  position: absolute;
+  top: 150px;
+  left: 88%;
+  // transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border: 5px solid var(--white);
+  border-radius: 50%;
+  background-color: var(--dark-purple);
+
+  @include responsive(laptop) {
+    top: 175px;
+    left: 90%;
+    width: 50px;
+    height: 50px;
+    border: 7px solid var(--white);
+  }
+}
+
+.body {
+  position: absolute;
+  top: 186px;
+  left: 97%;
+  // transform: translateX(-50%);
+  width: 5px;
+  height: 60px;
+  background-color: var(--white);
+  border-radius: 5px;
+
+  @include responsive(laptop) {
+    top: 220px;
+    left: 98%;
+    width: 7px;
+    height: 90px;
+  }
+}
+
+.arm {
+  position: absolute;
+  top: 210px;
+  width: 40px;
+  height: 5px;
+  background-color: var(--white);
+  border-radius: 5px;
+
+  @include responsive(laptop) {
+    top: 255px;
+    width: 60px;
+    height: 7px;
+  }
+
+  &__left {
+    left: 81%;
+    transform: rotate(-30deg);
+
+    @include responsive(laptop) {
+      left: 81%;
+      transform: rotate(-30deg);
+    }
+  }
+
+  &__right {
+    left: 97%;
+    transform: rotate(30deg);
+
+    @include responsive(laptop) {
+      left: 97%;
+      transform: rotate(35deg);
+    }
+  }
+}
+
+.leg {
+  position: absolute;
+  top: 252px;
+  width: 40px;
+  height: 5px;
+  background-color: var(--white);
+  border-radius: 5px;
+
+  @include responsive(laptop) {
+    top: 326px;
+    width: 70px;
+    height: 7px;
+  }
+
+  &__left {
+    left: 84%;
+    transform: rotate(-60deg);
+
+    @include responsive(laptop) {
+      left: 82%;
+      transform: rotate(-60deg);
+    }
+  }
+
+  &__right {
+    left: 95%;
+    transform: rotate(40deg);
+
+    @include responsive(laptop) {
+      top: 322px;
+      left: 96%;
+      transform: rotate(40deg);
+    }
   }
 }

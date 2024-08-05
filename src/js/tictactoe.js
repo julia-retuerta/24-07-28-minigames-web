@@ -103,7 +103,7 @@ const placeCircle = (box, index) => {
   board[index] = 'O'; // Jugada del usuario en el tablero
 
   if (checkWinner('O')) {
-    resultYouElement.textContent = 'YOU WIN';
+    resultYouElement.textContent = 'YOU WIN!';
     youPoints++;
     youPointsElement.textContent = youPoints;
     endGame();

@@ -33,18 +33,34 @@
 
         <div class="hangman-game__container">
           <div class="hangman-game__drawing">
-            <p>NUMBER OF TRIES: 6</p>
-            <img src="../assets/images/gallows.png" alt="" />
+            <p id="tries">NUMBER OF TRIES: 6</p>
+            <img class="hangman-game__img-gallows" src="../assets/images/gallows.png" alt="" />
+            <div class="hangman-game__doll">
+              <div class="head"></div>
+              <div class="body"></div>
+              <div class="arm arm__left"></div>
+              <div class="arm arm__right"></div>
+              <div class="leg leg__left"></div>
+              <div class="leg leg__right"></div>
+            </div>
           </div>
 
           <div class="hangman-game__data">
-            <span class="hangman-game__result">YOU LOSE</span>
+            <span id="result" class="hangman-game__result"></span>
             <div id="blanks" class="hangman-game__blanks"></div>
-            <div class="hangman-game__failed-letters"></div>
+            <div id="wrong-letters" class="hangman-game__wrong-letters"></div>
 
             <form id="form">
-              <input type="text" class="input-enter-a-letter" placeholder="ENTER A LETTER" maxlength="1" />
+              <input
+                type="text"
+                id="input-enter-a-letter"
+                class="input-enter-a-letter"
+                placeholder="ENTER A LETTER"
+                maxlength="1"
+              />
             </form>
+
+            <button id="play-again-button" class="hangman-game__button-play-again hidden">PLAY AGAIN</button>
           </div>
         </div>
       </div>
