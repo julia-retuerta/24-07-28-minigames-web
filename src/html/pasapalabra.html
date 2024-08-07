@@ -21,16 +21,43 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap" rel="stylesheet" />
 
-    <title>MINESWEEPER</title>
+    <title>PASAPALABRA</title>
   </head>
 
   <body>
     <main class="main">
       <a href="../index.html"><h1 class="main-title main-title--sm">JS MINIGAMES</h1></a>
-      <h2 class="secondary-title secondary-title--minesweeper">MINESWEEPER</h2>
+
+      <div class="pasapalabra-game">
+        <h2 class="game-title game-title--pasapalabra">PASAPALABRA</h2>
+
+        <div class="pasapalabra-game__time-alphabet-score-container">
+          <div class="pasapalabra-game__time-container">
+            <span class="pasapalabra-game__time-title">TIME</span>
+            <div class="pasapalabra-game__time-left">240</div>
+          </div>
+
+          <div id="alphabet" class="pasapalabra-game__alphabet-container"></div>
+
+          <div class="pasapalabra-game__score-container">
+            <span class="pasapalabra-game__score-title">SCORE</span>
+            <div class="pasapalabra-game__score-points">10</div>
+          </div>
+        </div>
+
+        <div class="pasapalabra-game__question-answer-container">
+          <div>STARTS WITH M. What is the name of the galaxy that contains our Solar System?</div>
+          <button>PASAPALABRA</button>
+          <form id="form">
+            <input type="text" />
+          </form>
+        </div>
+
+        <button>START GAME</button>
+      </div>
     </main>
 
     <!-- OBLIGATORIO PONER EL ACCESO AL SCRIPT -->
-    <script type="module" src="../js/index.js"></script>
+    <script type="module" src="../js/pasapalabra.js"></script>
   </body>
 </html>

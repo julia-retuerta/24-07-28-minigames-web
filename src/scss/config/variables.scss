@@ -1,17 +1,22 @@
 :root {
   /* Variables CSS */
+  --white: #ffffff;
   --dark-purple: #35005f;
   --purple: #7026aa;
   --light-purple: #a855ea;
-  --white: #ffffff;
   --bright-green: #00ffc2;
   --sky-blue: #64daff;
   --between-green-blue: #32ede0;
   --bright-red: #f00;
   --magenta: #b11e69;
+  --very-light-blue: #a0d7ff;
+  --blue: #0094ff;
+  --green: #00c880;
+  --soft-red: #ff5387;
   --gradient-green-purple: linear-gradient(90deg, #00ffc2 0%, #7026aa 100%);
   --gradient-red-purple: linear-gradient(90deg, #f00 0%, #7026aa 100%);
+  --gradient-blue-purple: linear-gradient(90deg, #a0d7ff 0%, #0094ff 50%, #7026aa 100%);
+  --gradient-lightblue-blue: linear-gradient(90deg, #a0d7ff 0%, #0094ff 100%);
+
   --gradient-orange-purple: linear-gradient(90deg, #f90 0%, #7026aa 100%);
 }
-
-/* Variables SASS */

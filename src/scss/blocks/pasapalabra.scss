@@ -1,0 +1,58 @@
+@use '../mixins/responsive.scss' as *;
+@use '../mixins/hover.scss' as *;
+
+.pasapalabra-game {
+  &__time-alphabet-score-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 90px;
+    margin-block: 60px;
+
+    @include responsive(laptop) {
+      align-items: flex-end;
+      gap: 60px;
+      margin-block: 90px;
+    }
+  }
+
+  &__time-left,
+  &__score-points {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 62px;
+    height: 62px;
+    background-image: var(--gradient-lightblue-blue);
+    border-radius: 50%;
+  }
+
+  &__alphabet-container {
+    position: relative;
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 280px;
+
+    @include responsive(laptop) {
+      position: static;
+      transform: translateX(0);
+    }
+  }
+
+  &__alphabet-letter {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--blue);
+    border: 3px solid var(--very-light-blue);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+}
