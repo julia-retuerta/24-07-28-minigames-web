@@ -2,18 +2,23 @@
 @use '../mixins/hover.scss' as *;
 
 .pasapalabra-game {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   &__time-alphabet-score-container {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 90px;
-    margin-block: 60px;
+    margin-block: 30px;
 
     @include responsive(laptop) {
       align-items: flex-end;
       gap: 60px;
-      margin-block: 90px;
+      margin-block: 60px;
     }
   }
 
@@ -54,5 +59,123 @@
     border: 3px solid var(--very-light-blue);
     border-radius: 50%;
     font-weight: 600;
+  }
+
+  &__question-answer-container {
+    position: absolute;
+    top: 600px;
+    margin-block: 30px;
+
+    @include responsive(laptop) {
+      position: static;
+    }
+  }
+
+  &__question {
+    position: relative;
+    background-color: var(--purple);
+    border-radius: 10px;
+    font-size: 30px;
+    line-height: 30px;
+    padding: 24px 30px;
+    margin-bottom: 30px;
+  }
+
+  &__question-letter {
+    position: absolute;
+    top: -35px;
+    left: -4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--purple);
+    border: 5px solid var(--dark-purple);
+    font-size: 48px;
+  }
+
+  &__pasapalabra-answer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    @include responsive(tablet) {
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      gap: 50px;
+    }
+  }
+
+  &__button-pasapalabra {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--blue);
+    color: var(--white);
+    transition: transform 0.3s;
+    cursor: pointer;
+
+    @include hover {
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    @include responsive(tablet) {
+      width: 50%;
+    }
+  }
+
+  &__form {
+    width: 100%;
+
+    @include responsive(tablet) {
+      width: 50%;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    background: none;
+    border: none;
+    border: 3.5px solid var(--very-light-blue);
+    border-radius: 10px;
+    color: var(--very-light-blue);
+    padding: 8px 20px;
+
+    &::placeholder {
+      color: var(--very-light-blue);
+      opacity: 0.7;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0px 0px 10px var(--very-light-blue);
+    }
+  }
+
+  &__button-start {
+    position: absolute;
+    top: 990px;
+    width: 210px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-image: var(--gradient-blue-purple);
+    color: var(--white);
+    cursor: pointer;
+
+    @include hover {
+      &:hover {
+        box-shadow: 0px 0px 20px 0px var(--purple);
+      }
+    }
+
+    @include responsive(laptop) {
+      position: static;
+    }
   }
 }
