@@ -34,27 +34,24 @@
         <div class="pasapalabra-game__time-alphabet-score-container">
           <div class="pasapalabra-game__time-container">
             <span class="pasapalabra-game__time-title">TIME</span>
-            <div class="pasapalabra-game__time-left">240</div>
+            <div id="time-left" class="pasapalabra-game__time-left">240</div>
           </div>
 
           <div id="alphabet" class="pasapalabra-game__alphabet-container"></div>
 
           <div class="pasapalabra-game__score-container">
             <span class="pasapalabra-game__score-title">SCORE</span>
-            <div class="pasapalabra-game__score-points">10</div>
+            <div id="points" class="pasapalabra-game__score-points">0</div>
           </div>
         </div>
 
         <div id="question-answer-container" class="pasapalabra-game__question-answer-container hidden">
-          <div id="question" class="pasapalabra-game__question">
-            <div id="question-letter" class="pasapalabra-game__question-letter"></div>
-            STARTS WITH M. What is the name of the galaxy that contains our Solar System?
-          </div>
+          <div id="question" class="pasapalabra-game__question"></div>
 
           <div class="pasapalabra-game__pasapalabra-answer-container">
-            <button class="pasapalabra-game__button-pasapalabra">PASAPALABRA</button>
+            <button id="button-pasapalabra" class="pasapalabra-game__button-pasapalabra">PASAPALABRA</button>
             <form id="form" class="pasapalabra-game__form">
-              <input type="text" placeholder="Your answer" class="pasapalabra-game__input" />
+              <input type="text" placeholder="Your answer" id="input" class="pasapalabra-game__input" />
             </form>
           </div>
         </div>

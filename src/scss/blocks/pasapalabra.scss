@@ -35,6 +35,9 @@
 
   &__alphabet-container {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 140px;
     left: 50%;
@@ -51,21 +54,60 @@
   &__alphabet-letter {
     position: absolute;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 30px;
     height: 30px;
     background-color: var(--blue);
     border: 3px solid var(--very-light-blue);
     border-radius: 50%;
     font-weight: 600;
+
+    &--current {
+      background-color: var(--purple);
+    }
+
+    &--correct {
+      background-color: var(--green);
+    }
+
+    &--incorrect {
+      background-color: var(--soft-red);
+    }
+
+    &--skipped {
+      background-color: var(--blue);
+    }
+  }
+
+  &__message {
+    position: absolute;
+    // top: 130px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    font-weight: 500;
+    font-size: 40px;
+
+    &--correct {
+      color: var(--bright-green);
+    }
+
+    &--incorrect {
+      color: var(--soft-red);
+    }
+
+    &--skipped {
+      color: var(--blue);
+    }
   }
 
   &__question-answer-container {
     position: absolute;
     top: 600px;
     margin-block: 30px;
-
 
     @include responsive(laptop) {
       position: static;
@@ -76,10 +118,14 @@
     position: relative;
     background-color: var(--purple);
     border-radius: 10px;
-    font-size: 30px;
-    line-height: 30px;
     padding: 24px 30px;
     margin-bottom: 30px;
+  }
+
+  &__question-text {
+    margin: 0;
+    font-size: 30px;
+    line-height: 30px;
   }
 
   &__question-letter {
