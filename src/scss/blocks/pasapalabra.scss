@@ -66,6 +66,7 @@
     top: 600px;
     margin-block: 30px;
 
+
     @include responsive(laptop) {
       position: static;
     }
@@ -100,6 +101,7 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    margin-bottom: 80px;
 
     @include responsive(tablet) {
       flex-direction: row-reverse;
@@ -157,15 +159,17 @@
     }
   }
 
-  &__button-start {
+  &__button-start,
+  &__button-restart {
     position: absolute;
-    top: 990px;
+    top: 590px;
     width: 210px;
     padding: 10px;
     border: none;
     border-radius: 10px;
     background-image: var(--gradient-blue-purple);
     color: var(--white);
+    margin-block: 20px;
     cursor: pointer;
 
     @include hover {
