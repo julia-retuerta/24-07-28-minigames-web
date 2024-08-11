@@ -4,6 +4,7 @@ import '../scss/styles.scss';
 
 const alphabetElement = document.getElementById('alphabet');
 const startButtonElement = document.getElementById('button-start-pasapalabra');
+const restartButtonElement = document.getElementById('button-restart-pasapalabra');
 const questionAnswerContainerElement = document.getElementById('question-answer-container');
 const questionElement = document.getElementById('question');
 const formElement = document.getElementById('form');
@@ -18,6 +19,7 @@ let score = 0;
 let timeLeft = 240;
 let timerInterval;
 let gameFinished = false;
+let skippedQuestions = []; // Array para almacenar preguntas saltadas
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -174,146 +176,558 @@ const startGame = () => {
   questionAnswerContainerElement.classList.remove('hidden');
 
   timeLeft = 240; // Reiniciar el tiempo
-  updateTimeDisplay();
-  startTimer(); // Iniciar el temporizador
+  score = 0;
+  currentQuestionPosition = 0;
+  skippedQuestions = []; // Reiniciar las preguntas saltadas
+  gameFinished = false;
 
-  showQuestion();
+  pointsElement.textContent = score;
+  updateTimeDisplay();
+
+  formElement.addEventListener('submit', verifyAnswer);
+  pasapalabraButtonElement.addEventListener('click', usePasapalabraButton);
+
+  startTimer(); // Iniciar el temporizador
+  showQuestion(); // Mostrar la primera pregunta
 };
 
 const showQuestion = () => {
   questionElement.textContent = '';
 
-  if (currentQuestionPosition < questions.length) {
-    const currentQuestion = questions[currentQuestionPosition];
+  // Si estamos recorriendo preguntas saltadas y ya no hay más, terminamos el juego
+  if (currentQuestionPosition >= questions.length && skippedQuestions.length === 0) {
+    if (score === questions.length) {
+      endGame('win');
+    } else {
+      endGame('lose');
+    }
+    return;
+  }
 
-    const questionLetterElement = document.createElement('div');
-    questionLetterElement.className = 'pasapalabra-game__question-letter';
-    questionLetterElement.textContent = currentQuestion.letter;
-    questionElement.append(questionLetterElement);
+  // Si estamos al final y hay preguntas saltadas, volver a ellas
+  if (currentQuestionPosition >= questions.length && skippedQuestions.length > 0) {
+    currentQuestionPosition = skippedQuestions.shift(); // Obtener la primera pregunta saltada
+  }
 
-    const questionTextElement = document.createElement('p');
-    questionTextElement.className = 'pasapalabra-game__question-text';
-    questionTextElement.textContent = ` ${currentQuestion.question}`;
-    questionElement.append(questionTextElement);
+  const currentQuestion = questions[currentQuestionPosition];
 
-    alphabetLetters.forEach(letterElement => {
-      if (letterElement.textContent === currentQuestion.letter) {
-        letterElement.classList.add('pasapalabra-game__alphabet-letter--current');
-      }
-    });
-  } else if (!gameFinished) {
-    endGame('You guessed all the questions!');
+  const questionLetterElement = document.createElement('div');
+  questionLetterElement.className = 'pasapalabra-game__question-letter';
+  questionLetterElement.textContent = currentQuestion.letter;
+  questionElement.append(questionLetterElement);
+
+  const questionTextElement = document.createElement('p');
+  questionTextElement.className = 'pasapalabra-game__question-text';
+  questionTextElement.textContent = ` ${currentQuestion.question}`;
+  questionElement.append(questionTextElement);
+
+  // Actualizar clase para mostrar qué letra está activa
+  alphabetLetters.forEach(letterElement => {
+    letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
+  });
+
+  alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--current');
+};
+
+const showMessage = (message, type) => {
+  messageElement.textContent = message;
+  messageElement.className = ''; // Resetea las clases existentes
+
+  // Añade la clase correspondiente según el tipo de mensaje
+  if (type === 'correct') {
+    messageElement.classList.add('pasapalabra-game__message--correct');
+  } else if (type === 'incorrect') {
+    messageElement.classList.add('pasapalabra-game__message--incorrect');
+  } else if (type === 'pasapalabra') {
+    messageElement.classList.add('pasapalabra-game__message--skipped');
+  } else if (type === 'end') {
+    messageElement.classList.add('pasapalabra-game__message--final');
   }
 };
 
 const verifyAnswer = event => {
   event.preventDefault();
 
-  const currentQuestion = questions[currentQuestionPosition];
   // para eliminar los espacios en blanco al principio y al final del texto
-  const userAnswer = inputElement.value.trim();
-
-  // Comparar la respuesta del usuario con la respuesta correcta
-  if (userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
-    // Respuesta correcta
-    alphabetLetters.forEach(letterElement => {
-      if (letterElement.textContent === currentQuestion.letter) {
-        letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-        letterElement.classList.add('pasapalabra-game__alphabet-letter--correct');
-        showAnswerMessage('Correct!');
-        score++;
-        pointsElement.textContent = score;
-      }
-    });
-  } else {
-    // Respuesta incorrecta
-    alphabetLetters.forEach(letterElement => {
-      if (letterElement.textContent === currentQuestion.letter) {
-        letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-        letterElement.classList.add('pasapalabra-game__alphabet-letter--incorrect');
-        // Mostrar mensaje de "incorrecto"
-        showAnswerMessage('Incorrect');
-      }
-    });
-  }
-
-  // Limpiar el input
+  const userAnswer = inputElement.value.toLowerCase().trim();
   inputElement.value = '';
 
-  // Avanzar a la siguiente pregunta
-  currentQuestionPosition++;
-  showQuestion();
-};
+  const currentQuestion = questions[currentQuestionPosition];
+  const isCorrect = userAnswer === currentQuestion.answer.toLowerCase();
 
-const showAnswerMessage = message => {
-  const messageElement = document.createElement('span');
-  messageElement.className = 'pasapalabra-game__message';
-
-  if (message === 'Correct!') {
-    messageElement.classList.add('pasapalabra-game__message--correct');
-  } else if (message === 'Incorrect') {
-    messageElement.classList.add('pasapalabra-game__message--incorrect');
-  } else if (message === 'Pasapalabra') {
-    messageElement.classList.add('pasapalabra-game__message--skipped');
+  if (isCorrect) {
+    score++;
+    showMessage('Correct!', 'correct');
+    alphabetLetters[currentQuestionPosition].classList.add('correct');
+  } else {
+    showMessage('Incorrect!', 'incorrect');
+    alphabetLetters[currentQuestionPosition].classList.add('incorrect');
   }
+  currentQuestionPosition++;
 
-  messageElement.textContent = message;
-  alphabetElement.append(messageElement);
-
-  // Ocultar el mensaje después de un tiempo
-  setTimeout(() => {
-    messageElement.textContent = '';
-  }, 2000);
+  // Mostrar la siguiente pregunta
+  showQuestion();
 };
 
 const usePasapalabraButton = () => {
-  const currentQuestion = questions[currentQuestionPosition];
+  skippedQuestions.push(currentQuestionPosition);
+  showMessage('Pasapalabra!', 'pasapalabra');
 
-  alphabetLetters.forEach(letterElement => {
-    if (letterElement.textContent === currentQuestion.letter) {
-      letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-      letterElement.classList.add('pasapalabra-game__alphabet-letter--skipped');
-      showAnswerMessage('Pasapalabra');
-    }
-  });
-
-  // Avanzar a la siguiente pregunta
   currentQuestionPosition++;
   showQuestion();
+};
+
+const startTimer = () => {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimeDisplay();
+
+    if (timeLeft <= 0) {
+      endGame('time');
+    }
+  }, 1000);
 };
 
 const updateTimeDisplay = () => {
   timeLeftElement.textContent = timeLeft;
 };
 
-const startTimer = () => {
-  timerInterval = setInterval(() => {
-    if (gameFinished) {
-      clearInterval(timerInterval);
-      return;
-    }
-
-    timeLeft--;
-    updateTimeDisplay();
-
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      endGame('Time is up!');
-    }
-  }, 1000);
-};
-
-const endGame = message => {
+const endGame = result => {
+  clearInterval(timerInterval);
   gameFinished = true;
 
-  questionElement.textContent = message;
-  // showAnswerMessage(message);
-  formElement.removeEventListener('submit', verifyAnswer);
-  pasapalabraButtonElement.removeEventListener('click', usePasapalabraButton);
+  if (result === 'win') {
+    showMessage('You won!', 'end');
+  } else if (result === 'lose') {
+    showMessage('You lost!', 'end');
+  } else if (result === 'time') {
+    showMessage("Time's up!", 'end');
+  }
+
+  restartButtonElement.classList.remove('hidden');
+  questionAnswerContainerElement.classList.add('hidden');
 };
 
-// Llamar a createAlphabetCircle después de definirlo
+const restartGame = event => {
+  event.preventDefault();
+
+  // Limpia la interfaz
+  restartButtonElement.classList.add('hidden');
+  questionAnswerContainerElement.classList.remove('hidden');
+  questionElement.textContent = '';
+
+  // Ocultar el mensaje de resultado
+  const messageElements = document.querySelectorAll('.pasapalabra-game__message');
+  messageElements.forEach(msg => msg.classList.add('hidden'));
+
+  // Reiniciar el estado del juego
+  currentQuestionPosition = 0;
+  score = 0;
+  timeLeft = 240;
+  gameFinished = false;
+  skippedQuestions = [];
+
+  pointsElement.textContent = score;
+  updateTimeDisplay();
+
+  // Reinicia las letras del círculo
+  alphabetLetters.forEach(letterElement => {
+    letterElement.classList.remove(
+      'pasapalabra-game__alphabet-letter--correct',
+      'pasapalabra-game__alphabet-letter--incorrect',
+      'pasapalabra-game__alphabet-letter--skipped',
+      'pasapalabra-game__alphabet-letter--current'
+    );
+  });
+
+  // Reiniciar el temporizador y mostrar la primera pregunta
+  startTimer();
+  showQuestion();
+
+  // Vuelve a agregar los eventos de submit y click
+  formElement.addEventListener('submit', verifyAnswer);
+  pasapalabraButtonElement.addEventListener('click', usePasapalabraButton);
+};
+
 createAlphabetCircle();
 startButtonElement.addEventListener('click', startGame);
-formElement.addEventListener('submit', verifyAnswer);
-pasapalabraButtonElement.addEventListener('click', usePasapalabraButton);
+restartButtonElement.addEventListener('click', restartGame);
+
+// const alphabetElement = document.getElementById('alphabet');
+// const startButtonElement = document.getElementById('button-start-pasapalabra');
+// const restartButtonElement = document.getElementById('button-restart-pasapalabra');
+// const questionAnswerContainerElement = document.getElementById('question-answer-container');
+// const questionElement = document.getElementById('question');
+// const formElement = document.getElementById('form');
+// const inputElement = document.getElementById('input');
+// const pointsElement = document.getElementById('points');
+// const pasapalabraButtonElement = document.getElementById('button-pasapalabra');
+// const timeLeftElement = document.getElementById('time-left');
+
+// let alphabetLetters;
+// let currentQuestionPosition = 0;
+// let score = 0;
+// let timeLeft = 240;
+// let timerInterval;
+// let gameFinished = false;
+
+// const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+// const questions = [
+//   { letter: 'A', question: 'STARTS WITH A. What is the capital of Greece?', answer: 'Athens' },
+//   { letter: 'B', question: 'STARTS WITH B. What is the largest mammal in the world?', answer: 'Blue whale' },
+//   { letter: 'C', question: 'STARTS WITH C. A domesticated animal known for catching mice.', answer: 'Cat' },
+//   {
+//     letter: 'D',
+//     question: 'STARTS WITH D. What is the name of a small, pointed missile used in a pub game?',
+//     answer: 'Dart'
+//   },
+//   { letter: 'E', question: 'STARTS WITH E. A precious stone that is often green.', answer: 'Emerald' },
+//   {
+//     letter: 'F',
+//     question: 'STARTS WITH F. What is a sweet, cold dessert made from cream or milk called?',
+//     answer: 'Frozen yogurt'
+//   },
+//   {
+//     letter: 'G',
+//     question: "STARTS WITH G. What is the name of the force that pulls objects toward the Earth's center?",
+//     answer: 'Gravity'
+//   },
+//   {
+//     letter: 'H',
+//     question: 'STARTS WITH H. Which organ in the human body is responsible for pumping blood?',
+//     answer: 'Heart'
+//   },
+//   {
+//     letter: 'I',
+//     question: 'STARTS WITH I. What is a word for frozen water?',
+//     answer: 'Ice'
+//   },
+//   {
+//     letter: 'J',
+//     question: 'STARTS WITH J. What is a place where two bones meet in the body called?',
+//     answer: 'Joint'
+//   },
+//   {
+//     letter: 'K',
+//     question: 'STARTS WITH K. What is a marsupial native to Australia known for carrying its young in a pouch?',
+//     answer: 'Kangaroo'
+//   },
+//   {
+//     letter: 'L',
+//     question: 'STARTS WITH L. What is a small body of water surrounded by land?',
+//     answer: 'Lake'
+//   },
+//   {
+//     letter: 'M',
+//     question: 'STARTS WITH M. What is a celestial body that orbits a planet called?',
+//     answer: 'Moon'
+//   },
+//   {
+//     letter: 'N',
+//     question: "STARTS WITH N. The primary gas in the Earth's atmosphere.",
+//     answer: 'Nitrogen'
+//   },
+//   {
+//     letter: 'O',
+//     question: 'STARTS WITH O. What is a round fruit with a tough, bright skin and juicy flesh?',
+//     answer: 'Orange'
+//   },
+//   {
+//     letter: 'P',
+//     question: 'STARTS WITH P. What is the name of the process by which plants make their food using sunlight?',
+//     answer: 'Photosynthesis'
+//   },
+//   {
+//     letter: 'Q',
+//     question: 'STARTS WITH Q. What is the name of a person who serves as the head of a monarchy?',
+//     answer: 'Queen'
+//   },
+//   {
+//     letter: 'R',
+//     question: 'STARTS WITH R. What is a four-legged animal known for its antlers?',
+//     answer: 'Reindeer'
+//   },
+//   {
+//     letter: 'S',
+//     question: 'STARTS WITH S. What is the term for a four-sided polygon with equal sides and angles?',
+//     answer: 'Square'
+//   },
+//   {
+//     letter: 'T',
+//     question: 'STARTS WITH T. A large red fruit often mistaken for a vegetable.',
+//     answer: 'Tomato'
+//   },
+//   {
+//     letter: 'U',
+//     question: 'STARTS WITH U. What is a country in Eastern Europe known for its capital, Kyiv?',
+//     answer: 'Ukraine'
+//   },
+//   {
+//     letter: 'V',
+//     question: 'STARTS WITH V. What is a word for a famous Italian city known for its canals?',
+//     answer: 'Venice'
+//   },
+//   {
+//     letter: 'W',
+//     question: 'STARTS WITH W. What is a large carnivorous mammal known for living in packs and howling?',
+//     answer: 'Wolf'
+//   },
+//   {
+//     letter: 'X',
+//     question: 'STARTS WITH X. A medical imaging technique that uses electromagnetic radiation.',
+//     answer: 'X-ray'
+//   },
+//   {
+//     letter: 'Y',
+//     question:
+//       'STARTS WITH Y. What is a domesticated animal known for its thick fur and used for carrying loads in mountainous regions?',
+//     answer: 'Yak'
+//   },
+//   {
+//     letter: 'Z',
+//     question: 'STARTS WITH Z. What is an African animal known for its black and white stripes?',
+//     answer: 'Zebra'
+//   }
+// ];
+
+// const createAlphabetCircle = () => {
+//   // 360° = 2π radianes
+//   // medida de cada ángulo
+//   const eachAngle = (2 * Math.PI) / alphabet.length;
+//   const startPoint = -Math.PI / 2; // Ajuste del ángulo para empezar a -90º
+//   const radius = 140;
+
+//   for (let i = 0; i < alphabet.length; i++) {
+//     const letterDiv = document.createElement('div');
+//     letterDiv.classList.add('pasapalabra-game__alphabet-letter');
+//     letterDiv.textContent = alphabet[i];
+
+//     // para posicionar cada letra equidistante
+//     // ángulo de cada letra
+//     const letterAngle = startPoint + i * eachAngle;
+
+//     // para situar cada letra en el eje horizontal y vertical del borde del círculo
+//     const x = radius + radius * Math.cos(letterAngle) - 15; // 15 es la mitad del tamaño del div de la letra
+//     const y = radius + radius * Math.sin(letterAngle) - 15;
+
+//     letterDiv.style.left = `${x}px`;
+//     letterDiv.style.top = `${y}px`;
+
+//     alphabetElement.append(letterDiv);
+
+//     // Inicializar alphabetLetters después de crear el círculo
+//     alphabetLetters = document.querySelectorAll('.pasapalabra-game__alphabet-letter');
+//   }
+// };
+
+// const startGame = () => {
+//   startButtonElement.classList.add('hidden');
+//   questionAnswerContainerElement.classList.remove('hidden');
+
+//   timeLeft = 240; // Reiniciar el tiempo
+//   score = 0;
+//   currentQuestionPosition = 0;
+//   gameFinished = false;
+
+//   pointsElement.textContent = score;
+//   updateTimeDisplay();
+
+//   formElement.addEventListener('submit', verifyAnswer);
+//   pasapalabraButtonElement.addEventListener('click', usePasapalabraButton);
+
+//   startTimer(); // Iniciar el temporizador
+//   showQuestion();
+// };
+
+// const showQuestion = () => {
+//   questionElement.textContent = '';
+
+//   if (currentQuestionPosition < questions.length) {
+//     const currentQuestion = questions[currentQuestionPosition];
+
+//     const questionLetterElement = document.createElement('div');
+//     questionLetterElement.className = 'pasapalabra-game__question-letter';
+//     questionLetterElement.textContent = currentQuestion.letter;
+//     questionElement.append(questionLetterElement);
+
+//     const questionTextElement = document.createElement('p');
+//     questionTextElement.className = 'pasapalabra-game__question-text';
+//     questionTextElement.textContent = ` ${currentQuestion.question}`;
+//     questionElement.append(questionTextElement);
+
+//     alphabetLetters.forEach(letterElement => {
+//       if (letterElement.textContent === currentQuestion.letter) {
+//         letterElement.classList.add('pasapalabra-game__alphabet-letter--current');
+//       }
+//     });
+//   } else if (!gameFinished) {
+//     if (score === questions.length) {
+//       endGame('win');
+//     } else {
+//       endGame('lose');
+//     }
+//   }
+// };
+
+// const verifyAnswer = event => {
+//   event.preventDefault();
+
+//   const currentQuestion = questions[currentQuestionPosition];
+//   // para eliminar los espacios en blanco al principio y al final del texto
+//   const userAnswer = inputElement.value.trim();
+
+//   // Comparar la respuesta del usuario con la respuesta correcta
+//   if (userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
+//     // Respuesta correcta
+//     alphabetLetters.forEach(letterElement => {
+//       if (letterElement.textContent === currentQuestion.letter) {
+//         letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
+//         letterElement.classList.add('pasapalabra-game__alphabet-letter--correct');
+//         showAnswerMessage('Correct!');
+//         score++;
+//         pointsElement.textContent = score;
+//       }
+//     });
+//   } else {
+//     // Respuesta incorrecta
+//     alphabetLetters.forEach(letterElement => {
+//       if (letterElement.textContent === currentQuestion.letter) {
+//         letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
+//         letterElement.classList.add('pasapalabra-game__alphabet-letter--incorrect');
+//         // Mostrar mensaje de "incorrecto"
+//         showAnswerMessage('Incorrect');
+//       }
+//     });
+//   }
+
+//   // Limpiar el input
+//   inputElement.value = '';
+
+//   // Avanzar a la siguiente pregunta
+//   currentQuestionPosition++;
+//   showQuestion();
+// };
+
+// const showAnswerMessage = message => {
+//   const messageElement = document.createElement('span');
+//   messageElement.className = 'pasapalabra-game__message';
+
+//   if (message === 'Correct!') {
+//     messageElement.classList.add('pasapalabra-game__message--correct');
+//   } else if (message === 'Incorrect') {
+//     messageElement.classList.add('pasapalabra-game__message--incorrect');
+//   } else if (message === 'Pasapalabra') {
+//     messageElement.classList.add('pasapalabra-game__message--skipped');
+//   } else {
+//     messageElement.classList.add('pasapalabra-game__message--final');
+//   }
+
+//   messageElement.textContent = message;
+//   alphabetElement.append(messageElement);
+
+//   if (message === 'Correct!' || message === 'Incorrect' || message === 'Pasapalabra') {
+//     setTimeout(() => {
+//       messageElement.classList.add('hidden');
+//     }, 1500);
+//   }
+// };
+
+// const usePasapalabraButton = () => {
+//   const currentQuestion = questions[currentQuestionPosition];
+
+//   alphabetLetters.forEach(letterElement => {
+//     if (letterElement.textContent === currentQuestion.letter) {
+//       letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
+//       letterElement.classList.add('pasapalabra-game__alphabet-letter--skipped');
+//       showAnswerMessage('Pasapalabra');
+//     }
+//   });
+
+//   // Avanzar a la siguiente pregunta
+//   currentQuestionPosition++;
+//   showQuestion();
+// };
+
+// const updateTimeDisplay = () => {
+//   timeLeftElement.textContent = timeLeft;
+// };
+
+// const startTimer = () => {
+//   timerInterval = setInterval(() => {
+//     if (gameFinished) {
+//       clearInterval(timerInterval);
+//       return;
+//     }
+
+//     timeLeft--;
+//     updateTimeDisplay();
+
+//     if (timeLeft <= 0) {
+//       clearInterval(timerInterval);
+//       endGame('timeup');
+//     }
+//   }, 1000);
+// };
+
+// const endGame = result => {
+//   gameFinished = true;
+
+//   formElement.removeEventListener('submit', verifyAnswer);
+//   pasapalabraButtonElement.removeEventListener('click', usePasapalabraButton);
+
+//   setTimeout(() => {
+//     let message;
+//     if (result === 'win') {
+//       message = 'You guessed all the questions!';
+//     } else if (result === 'lose') {
+//       message = "You didn't answer all the questions correctly";
+//     } else if (result === 'timeup') {
+//       message = 'Time is up!';
+//     }
+
+//     showAnswerMessage(message);
+
+//     questionAnswerContainerElement.classList.add('hidden');
+//     restartButtonElement.classList.remove('hidden');
+//   }, 1500);
+// };
+
+// const restartGame = event => {
+//   event.preventDefault();
+
+//   restartButtonElement.classList.add('hidden');
+//   questionAnswerContainerElement.classList.remove('hidden');
+//   questionElement.textContent = '';
+
+//   // Ocultar el mensaje de resultado
+//   const messageElements = document.querySelectorAll('.pasapalabra-game__message');
+//   messageElements.forEach(msg => msg.classList.add('hidden'));
+
+//   // Reiniciar el estado del juego
+//   currentQuestionPosition = 0;
+//   score = 0;
+//   timeLeft = 240;
+//   gameFinished = false;
+
+//   // Reiniciar los elementos del juego
+//   pointsElement.textContent = score;
+//   updateTimeDisplay();
+
+//   // Crear el círculo con el alfabeto de nuevo
+//   createAlphabetCircle();
+
+//   // Reiniciar el temporizador y mostrar la primera pregunta
+//   startTimer();
+//   showQuestion();
+
+//   formElement.addEventListener('submit', verifyAnswer);
+//   pasapalabraButtonElement.addEventListener('click', usePasapalabraButton);
+// };
+
+// startButtonElement.addEventListener('click', startGame);
+// formElement.addEventListener('submit', verifyAnswer);
+// pasapalabraButtonElement.addEventListener('click', usePasapalabraButton);
+// restartButtonElement.addEventListener('click', restartGame);
+
+// createAlphabetCircle();
