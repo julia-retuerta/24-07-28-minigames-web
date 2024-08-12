@@ -34,7 +34,7 @@ const chooseHangmanWord = () => {
 };
 
 const createLetterLines = () => {
-  blanksElement.textContent = ''; // Limpiar líneas previas
+  blanksElement.textContent = ''; // Limpiar líneas anteriores
 
   const fragment = document.createDocumentFragment();
 
@@ -52,7 +52,7 @@ const createLetterLines = () => {
   blanksElement.append(fragment);
 };
 
-// Calcula el número de letras únicas en una palabra
+// Calcular el número de letras únicas en una palabra
 const countUniqueLetters = word => {
   const uniqueLetters = [];
   for (let letter of word) {
@@ -83,7 +83,7 @@ const updateDisplay = () => {
   if (wrongLetters.length > 0) {
     wrongLettersElement.textContent = wrongLetters.join(', ').toUpperCase();
   } else {
-    wrongLettersElement.textContent = ''; // Limpiar si no hay letras fallidas
+    wrongLettersElement.textContent = ''; // Limpiar si no hay letras incorrectas
   }
 
   // Mostrar la siguiente parte del muñeco
@@ -96,7 +96,7 @@ const updateDisplay = () => {
   // Actualizar número de intentos restantes
   triesElement.textContent = `NUMBER OF TRIES: ${numberOfTries}`;
 
-  // Comprobar si el jugador ha ganado o perdido
+  // Comprobar si el jugador ha ganado o ha perdido
   if (numberOfTries === 0) {
     resultElement.textContent = 'YOU LOSE';
     endGame();
@@ -106,8 +106,8 @@ const updateDisplay = () => {
   }
 };
 
-const handleLetterInput = letter => {
-  letter = letter.toLowerCase(); // Normalizar la entrada
+const checkLetterAndUpdate = letter => {
+  letter = letter.toLowerCase();
 
   if (hangmanWord.includes(letter)) {
     if (!correctLetters.includes(letter)) {
@@ -116,7 +116,7 @@ const handleLetterInput = letter => {
   } else {
     if (!wrongLetters.includes(letter)) {
       wrongLetters.push(letter);
-      numberOfTries--; // Decrementar intentos restantes
+      numberOfTries--; // Disminuir el nº de intentos restantes
     }
   }
 
@@ -130,23 +130,23 @@ const startGame = () => {
   wrongLetters = [];
   numberOfTries = 6;
   resultElement.textContent = ''; // Limpiar resultados anteriores
-  inputElement.disabled = false; // Asegúrate de que el input esté habilitado al comenzar un nuevo juego
+  inputElement.disabled = false;
   playAgainButton.classList.add('hidden');
   parts.forEach(part => part.classList.add('hidden')); // Ocultar partes del cuerpo
   updateDisplay();
 };
 
-// Termina el juego
 const endGame = () => {
-  inputElement.disabled = true; // Deshabilitar el input para evitar más entradas
+  inputElement.disabled = true; // Deshabilitar el input para evitar que se pueda escribir
   playAgainButton.classList.remove('hidden');
 };
 
 formElement.addEventListener('submit', event => {
   event.preventDefault();
 
+  // Para eliminar los espacios en blanco al principio y al final
   const letter = inputElement.value.trim();
-  handleLetterInput(letter);
+  checkLetterAndUpdate(letter);
 
   inputElement.value = ''; // Limpiar el input después de enviar
 });

@@ -235,7 +235,6 @@ const showQuestion = () => {
   questionTextElement.textContent = ` ${currentQuestion.question}`;
   questionElement.append(questionTextElement);
 
-  // Restablecer estado de las letras
   resetLetterStates();
 
   // Actualizar clases de letras según estado
@@ -274,7 +273,7 @@ const resetLetterStates = () => {
 const verifyAnswer = event => {
   event.preventDefault();
 
-  // para eliminar los espacios en blanco al principio y al final del texto
+  // Para eliminar los espacios en blanco al principio y al final del texto
   const userAnswer = inputElement.value.toLowerCase().trim();
   inputElement.value = '';
 
@@ -357,7 +356,7 @@ const startTimer = () => {
 
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      endGame('lose');
+      endGame('timeup');
     }
   }, 1000);
 };
@@ -389,9 +388,8 @@ const endGame = result => {
 const restartGame = event => {
   event.preventDefault();
 
-  questionAnswerContainerElement.classList.add('hidden');
+  questionAnswerContainerElement.classList.remove('hidden');
   restartButtonElement.classList.add('hidden');
-  startButtonElement.classList.remove('hidden');
   questionElement.textContent = '';
 
   // Ocultar el mensaje de resultado
@@ -410,11 +408,13 @@ const restartGame = event => {
   pointsElement.textContent = score;
   updateTimeDisplay();
 
-  // Crear el círculo con el alfabeto de nuevo
-  alphabetElement.innerHTML = '';
+  initializeLetterStates();
+
+  // Crear el círculo del alfabeto de nuevo
+  alphabetElement.textContent = '';
   createAlphabetCircle();
 
-  // Reiniciar el temporizador y mostrar la primera pregunta
+  // Reiniciar el temporizador y enseñar la primera pregunta
   clearInterval(timerInterval);
   startTimer();
   showQuestion();

@@ -130,7 +130,7 @@ const pcTurn = () => {
 };
 
 const placeCross = () => {
-  // Para guardar los índices de las casillas vacías, Esto es para saber en qué casillas puede poner una cruz el pc
+  // Para guardar los índices de las casillas vacías. Esto es para saber en qué casillas puede poner una cruz el pc
   const emptyIndexes = [];
 
   // Iterar sobre el tablero
@@ -189,9 +189,9 @@ const checkWinner = player => {
 };
 
 const isBoardComplete = () => {
-  // iterar sobre el tablero
+  // Iterar sobre el tablero
   for (let i = 0; i < board.length; i++) {
-    // si hay alguna casilla vacía devolver false
+    // Si hay alguna casilla vacía, devolver false
     if (board[i] === null) {
       return false;
     }
