@@ -206,21 +206,6 @@ const initializeLetterStates = () => {
 const showQuestion = () => {
   questionElement.textContent = '';
 
-  // Si estamos recorriendo preguntas saltadas y ya no hay más, terminamos el juego
-  // if (currentQuestionPosition >= questions.length && skippedQuestions.length === 0) {
-  //   if (score === questions.length) {
-  //     endGame('win');
-  //   } else {
-  //     endGame('lose');
-  //   }
-  //   return;
-  // }
-
-  // // Si estamos al final y hay preguntas saltadas, volver a ellas
-  // if (currentQuestionPosition >= questions.length && skippedQuestions.length > 0) {
-  //   currentQuestionPosition = skippedQuestions.shift(); // Obtener la primera pregunta saltada
-  // }
-
   if (pendingQuestions.length === 0 && skippedQuestions.length === 0) {
     if (score === questions.length) {
       endGame('win');
@@ -233,7 +218,7 @@ const showQuestion = () => {
   if (pendingQuestions.length === 0) {
     pendingQuestions = [...skippedQuestions];
     skippedQuestions = [];
-    pendingQuestions.sort((a, b) => a - b); // Opcional: Ordenar para mantener el orden original
+    pendingQuestions.sort((a, b) => a - b); // Ordenar para mantener el orden original
   }
 
   currentQuestionPosition = pendingQuestions.shift();
@@ -250,11 +235,6 @@ const showQuestion = () => {
   questionTextElement.textContent = ` ${currentQuestion.question}`;
   questionElement.append(questionTextElement);
 
-  // // Remove current letter class from all letters before updating
-  // alphabetLetters.forEach(letterElement => {
-  //   letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-  // });
-
   // Reset all letter states to pending
   alphabetLetters.forEach(letterElement => {
     const letter = letterElement.textContent;
@@ -262,8 +242,7 @@ const showQuestion = () => {
   });
 
   // Restaurar el estado de todas las letras
-   // Remove all classes from letters
-   alphabetLetters.forEach(letterElement => {
+  alphabetLetters.forEach(letterElement => {
     letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
     letterElement.classList.remove('pasapalabra-game__alphabet-letter--correct');
     letterElement.classList.remove('pasapalabra-game__alphabet-letter--incorrect');
@@ -286,57 +265,6 @@ const showQuestion = () => {
   if (currentLetterElement) {
     currentLetterElement.classList.add('pasapalabra-game__alphabet-letter--current');
   }
-
-  // letterStates[currentQuestion.letter] = 'current';
-
-  // const currentLetterElement = [...alphabetLetters].find(
-  //   letterElement => letterElement.textContent === currentQuestion.letter
-  // );
-  // if (currentLetterElement) {
-  //   currentLetterElement.classList.add('pasapalabra-game__alphabet-letter--current');
-  // }
-
-  // Actualizar clase para mostrar qué letra está activa
-  // alphabetLetters.forEach((letterElement, index) => {
-  //   letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-  //   if (index === currentQuestionPosition) {
-  //     letterElement.classList.add('pasapalabra-game__alphabet-letter--current');
-  //   }
-  // });
-
-  // alphabetLetters.forEach(letterElement => {
-  //   letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-  // });
-
-  // alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--current');
-
-  //////////////////////////////////////////////////////////////
-
-  // if (currentQuestionPosition < questions.length) {
-  //   const currentQuestion = questions[currentQuestionPosition];
-
-  //   const questionLetterElement = document.createElement('div');
-  //   questionLetterElement.className = 'pasapalabra-game__question-letter';
-  //   questionLetterElement.textContent = currentQuestion.letter;
-  //   questionElement.append(questionLetterElement);
-
-  //   const questionTextElement = document.createElement('p');
-  //   questionTextElement.className = 'pasapalabra-game__question-text';
-  //   questionTextElement.textContent = ` ${currentQuestion.question}`;
-  //   questionElement.append(questionTextElement);
-
-  //   alphabetLetters.forEach(letterElement => {
-  //     if (letterElement.textContent === currentQuestion.letter) {
-  //       letterElement.classList.add('pasapalabra-game__alphabet-letter--current');
-  //     }
-  //   });
-  // } else if (!gameFinished) {
-  //   if (score === questions.length) {
-  //     endGame('win');
-  //   } else {
-  //     endGame('lose');
-  //   }
-  // }
 };
 
 const verifyAnswer = event => {
@@ -358,53 +286,9 @@ const verifyAnswer = event => {
     showAnswerMessage('Incorrect');
   }
 
-  // if (isCorrect) {
-  //   score++;
-  //   alphabetLetters[currentQuestionPosition].classList.remove('pasapalabra-game__alphabet-letter--current');
-  //   alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--correct');
-  //   showAnswerMessage('Correct!');
-  // } else {
-  //   alphabetLetters[currentQuestionPosition].classList.remove('pasapalabra-game__alphabet-letter--current');
-  //   alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--incorrect');
-  //   showAnswerMessage('Incorrect');
-  // }
-
   pointsElement.textContent = score;
   currentQuestionPosition++;
   showQuestion();
-
-  // const currentQuestion = questions[currentQuestionPosition];
-  // // para eliminar los espacios en blanco al principio y al final del texto
-  // const userAnswer = inputElement.value.trim();
-
-  // // Comparar la respuesta del usuario con la respuesta correcta
-  // if (userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
-  //   // Respuesta correcta
-  //   alphabetLetters.forEach(letterElement => {
-  //     if (letterElement.textContent === currentQuestion.letter) {
-  //       letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-  //       letterElement.classList.add('pasapalabra-game__alphabet-letter--correct');
-  //       showAnswerMessage('Correct!');
-  //       score++;
-  //       pointsElement.textContent = score;
-  //     }
-  //   });
-  // } else {
-  //   // Respuesta incorrecta
-  //   alphabetLetters.forEach(letterElement => {
-  //     if (letterElement.textContent === currentQuestion.letter) {
-  //       letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-  //       letterElement.classList.add('pasapalabra-game__alphabet-letter--incorrect');
-  //       // Mostrar mensaje de "incorrecto"
-  //       showAnswerMessage('Incorrect');
-  //     }
-  //   });
-  // }
-
-  // inputElement.value = '';
-  // currentQuestionPosition++; // Avanzar a la siguiente pregunta
-
-  // showQuestion();
 };
 
 const showAnswerMessage = message => {
@@ -432,11 +316,6 @@ const showAnswerMessage = message => {
 };
 
 const usePasapalabraButton = () => {
-  // Marcar la pregunta como saltada
-  // alphabetLetters[currentQuestionPosition].classList.remove('pasapalabra-game__alphabet-letter--current');
-  // alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--skipped');
-
-  // const currentQuestion = questions[currentQuestionPosition];
   letterStates[currentQuestion.letter] = 'skipped';
   showAnswerMessage('Pasapalabra');
 
@@ -444,24 +323,8 @@ const usePasapalabraButton = () => {
     skippedQuestions.push(currentQuestionPosition);
   }
 
-  // skippedQuestions.push(currentQuestionPosition);
-
   currentQuestionPosition++;
   showQuestion();
-
-  // const currentQuestion = questions[currentQuestionPosition];
-
-  // alphabetLetters.forEach(letterElement => {
-  //   if (letterElement.textContent === currentQuestion.letter) {
-  //     letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-  //     letterElement.classList.add('pasapalabra-game__alphabet-letter--skipped');
-  //     showAnswerMessage('Pasapalabra');
-  //   }
-  // });
-
-  // // Avanzar a la siguiente pregunta
-  // currentQuestionPosition++;
-  // showQuestion();
 };
 
 const updateTimeDisplay = () => {
@@ -479,21 +342,6 @@ const startTimer = () => {
       endGame('lose');
     }
   }, 1000);
-
-  // timerInterval = setInterval(() => {
-  //   if (gameFinished) {
-  //     clearInterval(timerInterval);
-  //     return;
-  //   }
-
-  //   timeLeft--;
-  //   updateTimeDisplay();
-
-  //   if (timeLeft <= 0) {
-  //     clearInterval(timerInterval);
-  //     endGame('timeup');
-  //   }
-  // }, 1000);
 };
 
 const endGame = result => {
