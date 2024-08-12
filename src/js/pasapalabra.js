@@ -218,7 +218,7 @@ const showQuestion = () => {
   if (pendingQuestions.length === 0) {
     pendingQuestions = [...skippedQuestions];
     skippedQuestions = [];
-    pendingQuestions.sort((a, b) => a - b); // Opcional: Ordenar para mantener el orden original
+    pendingQuestions.sort((a, b) => a - b); // Ordenar para mantener el orden original
   }
 
   // Obtener la siguiente pregunta pendiente
@@ -324,7 +324,17 @@ const showAnswerMessage = message => {
 
 const usePasapalabraButton = () => {
   const currentQuestion = questions[currentQuestionPosition];
+  const currentLetterElement = alphabetLetters[currentQuestionPosition];
   letterStates[currentQuestion.letter] = 'skipped';
+
+  currentLetterElement.classList.remove(
+    'pasapalabra-game__alphabet-letter--current',
+    'pasapalabra-game__alphabet-letter--correct',
+    'pasapalabra-game__alphabet-letter--incorrect'
+  );
+
+  currentLetterElement.classList.add('pasapalabra-game__alphabet-letter--skipped');
+
   showAnswerMessage('Pasapalabra');
 
   if (!skippedQuestions.includes(currentQuestionPosition)) {
@@ -379,8 +389,9 @@ const endGame = result => {
 const restartGame = event => {
   event.preventDefault();
 
+  questionAnswerContainerElement.classList.add('hidden');
   restartButtonElement.classList.add('hidden');
-  questionAnswerContainerElement.classList.remove('hidden');
+  startButtonElement.classList.remove('hidden');
   questionElement.textContent = '';
 
   // Ocultar el mensaje de resultado
@@ -393,15 +404,18 @@ const restartGame = event => {
   timeLeft = 240;
   gameFinished = false;
   skippedQuestions = [];
+  pendingQuestions = [...questions.map((_, index) => index)];
 
   // Reiniciar los elementos del juego
   pointsElement.textContent = score;
   updateTimeDisplay();
 
   // Crear el círculo con el alfabeto de nuevo
+  alphabetElement.innerHTML = '';
   createAlphabetCircle();
 
   // Reiniciar el temporizador y mostrar la primera pregunta
+  clearInterval(timerInterval);
   startTimer();
   showQuestion();
 
