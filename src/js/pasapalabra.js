@@ -218,11 +218,11 @@ const showQuestion = () => {
   if (pendingQuestions.length === 0) {
     pendingQuestions = [...skippedQuestions];
     skippedQuestions = [];
-    pendingQuestions.sort((a, b) => a - b); // Ordenar para mantener el orden original
+    pendingQuestions.sort((a, b) => a - b); // Opcional: Ordenar para mantener el orden original
   }
 
+  // Obtener la siguiente pregunta pendiente
   currentQuestionPosition = pendingQuestions.shift();
-
   const currentQuestion = questions[currentQuestionPosition];
 
   const questionLetterElement = document.createElement('div');
@@ -235,36 +235,40 @@ const showQuestion = () => {
   questionTextElement.textContent = ` ${currentQuestion.question}`;
   questionElement.append(questionTextElement);
 
-  // Reset all letter states to pending
-  alphabetLetters.forEach(letterElement => {
-    const letter = letterElement.textContent;
-    letterStates[letter] = 'pending';
-  });
+  // Restablecer estado de las letras
+  resetLetterStates();
 
-  // Restaurar el estado de todas las letras
-  alphabetLetters.forEach(letterElement => {
-    letterElement.classList.remove('pasapalabra-game__alphabet-letter--current');
-    letterElement.classList.remove('pasapalabra-game__alphabet-letter--correct');
-    letterElement.classList.remove('pasapalabra-game__alphabet-letter--incorrect');
-    letterElement.classList.remove('pasapalabra-game__alphabet-letter--skipped');
-  });
-
-  // Update letter states based on letterStates object
+  // Actualizar clases de letras según estado
   alphabetLetters.forEach(letterElement => {
     const letter = letterElement.textContent;
     const state = letterStates[letter];
-    if (state !== 'pending') {
-      letterElement.classList.add(`pasapalabra-game__alphabet-letter--${state}`);
+
+    switch (state) {
+      case 'correct':
+        letterElement.classList.add('pasapalabra-game__alphabet-letter--correct');
+        break;
+      case 'incorrect':
+        letterElement.classList.add('pasapalabra-game__alphabet-letter--incorrect');
+        break;
+      case 'skipped':
+        letterElement.classList.add('pasapalabra-game__alphabet-letter--skipped');
+        break;
     }
   });
 
-  // Set the current letter as current
+  // Marcar letra actual como 'current'
   const currentLetterElement = [...alphabetLetters].find(
     letterElement => letterElement.textContent === currentQuestion.letter
   );
   if (currentLetterElement) {
     currentLetterElement.classList.add('pasapalabra-game__alphabet-letter--current');
   }
+};
+
+const resetLetterStates = () => {
+  alphabet.split('').forEach(letter => {
+    letterStates[letter] = 'pending';
+  });
 };
 
 const verifyAnswer = event => {
@@ -280,9 +284,12 @@ const verifyAnswer = event => {
   if (isCorrect) {
     score++;
     letterStates[currentQuestion.letter] = 'correct';
+    alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--correct');
+    console.log('Clase correcta añadida:', alphabetLetters[currentQuestionPosition]);
     showAnswerMessage('Correct!');
   } else {
     letterStates[currentQuestion.letter] = 'incorrect';
+    alphabetLetters[currentQuestionPosition].classList.add('pasapalabra-game__alphabet-letter--incorrect');
     showAnswerMessage('Incorrect');
   }
 
@@ -316,6 +323,7 @@ const showAnswerMessage = message => {
 };
 
 const usePasapalabraButton = () => {
+  const currentQuestion = questions[currentQuestionPosition];
   letterStates[currentQuestion.letter] = 'skipped';
   showAnswerMessage('Pasapalabra');
 
